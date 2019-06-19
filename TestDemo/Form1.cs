@@ -16,5 +16,19 @@ namespace TestDemo
         {
             InitializeComponent();
         }
+        Func<object, object> funcOne = delegate (object s)
+        {
+            return s;
+        };
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            String port = text_prot.Text.ToString();
+
+            
+
+            Console.WriteLine(funcOne.ToString());
+
+
+        }
     }
 }
