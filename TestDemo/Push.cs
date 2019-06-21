@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 
 namespace test.window.server.Server
 {
+   
 
     public class Push
     {
-        TcpPushServer server;
+
+        public delegate void AlarmEventHandler(object sender, EventArgs e);//声明关于事件的委托
+        public event AlarmEventHandler Alarm;//声明事件
+
+        public TcpPushServer server;
         /// <summary>
         /// 设置基本配置
         /// </summary>   
@@ -27,14 +32,15 @@ namespace test.window.server.Server
             server.OnReceive += Server_OnReceive;
             server.OnSend += Server_OnSend;
             server.OnClose += Server_OnClose;
+  
             server.Start(port);
         }
 
-        private void Server_OnAccept(int obj)
+        public void Server_OnAccept(int obj)
         {
             //server.SetAttached(obj, 555);
             Console.WriteLine($"Push已连接{obj}");
-
+            this.Alarm(obj, new EventArgs());   //触发事件,发出数据
 
             //Thread thread = new Thread(new ThreadStart(() =>
             //{
@@ -51,23 +57,28 @@ namespace test.window.server.Server
 
         }
 
-        private void Server_OnSend(int arg1, int arg2)
+        public void Server_OnSend(int arg1, int arg2)
         {
             //Console.WriteLine($"Push已发送:{arg1} 长度:{arg2}");
         }
 
-        private void Server_OnReceive(int arg1, byte[] arg2)
+        public void Server_OnReceive(int arg1, byte[] arg2)
         {
             //int aaa=server.GetAttached<int>(arg1);
             Console.WriteLine($"Push已接收:{arg1} 长度:{arg2.Length}");
             server.Send(arg1, arg2, 0, arg2.Length);
         }
 
-        private void Server_OnClose(int obj)
+        public void Server_OnClose(int obj)
         {
             //int aaa = server.GetAttached<int>(obj);
             Console.WriteLine($"Push断开{obj}");
         }
 
     }
+
+
+
+
+
 }
