@@ -84,6 +84,12 @@ namespace socket.core.Server
         /// 已经连接的对象池
         /// </summary>
         internal ConcurrentDictionary<int, ConnectClient> connectClient;
+
+
+        /// <summary>
+        /// 已经连接的对象池
+        /// </summary>
+        internal ConcurrentDictionary<int, String> connectString;
         /// <summary>
         /// 发送线程数
         /// </summary>
@@ -137,6 +143,7 @@ namespace socket.core.Server
         private void Init()
         {
             connectClient = new ConcurrentDictionary<int, ConnectClient>();
+            connectString = new ConcurrentDictionary<int, string>();
             sendQueues = new ConcurrentQueue<SendingQueue>[sendthread];
             for (int i = 0; i < sendthread; i++)
             {
@@ -266,6 +273,7 @@ namespace socket.core.Server
             connecttoken.saea_receive.UserToken = connectId;
             connecttoken.saea_receive.AcceptSocket = e.AcceptSocket;
             connectClient.TryAdd(connectId, connecttoken);
+            connectString.TryAdd(connectId, connecttoken.ToString());
             //一旦客户机连接，就准备接收。
             if (!e.AcceptSocket.ReceiveAsync(connecttoken.saea_receive))
             {
@@ -485,6 +493,8 @@ namespace socket.core.Server
             {
                 int connectId = (int)e.UserToken;
                 ConnectClient client;
+                String socketName;
+
                 if (!connectClient.TryGetValue(connectId, out client))
                 {
                     return;
@@ -507,6 +517,7 @@ namespace socket.core.Server
                     OnClose(connectId);
                 }
                 connectClient.TryRemove((int)e.UserToken, out client);
+                connectString.TryRemove((int)e.UserToken, out socketName);
                 client = null;
             }
         }

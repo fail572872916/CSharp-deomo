@@ -77,7 +77,8 @@ namespace test.window.server.Server
         public void Server_OnClose(int obj)
         {
             //int aaa = server.GetAttached<int>(obj);
-            Console.WriteLine($"Push断开{obj}");
+            this.Alarm(obj, false, new EventArgs());   //触发事件,发出数据
+            //Console.WriteLine($"Push断开{obj}");
         }
 
     }
