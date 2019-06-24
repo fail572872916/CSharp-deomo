@@ -21,6 +21,12 @@ namespace TestDemo
         }
         Push push1;
 
+        delegate void SetTextCallback(bool isShow);
+        private void SetText(bool isShow)
+        {
+            bt_link.Enabled = isShow;
+        }
+
 
         //delegate void a(int a,int b,int c ,int d, void);//定义一个委托111111111111111111
 
@@ -36,14 +42,13 @@ namespace TestDemo
             {
                 push1 = new Push(500, 1024, 0, Convert.ToInt32(port));
 
-                
-                push1.Alarm += new Push.AlarmEventHandler(HostHandleAlarm);//将A类的方法与B类的事件 用 B类的委托绑定
 
+                push1.Alarm += new Push.AlarmEventHandler(HostHandleAlarm);//将A类的方法与B类的事件 用 B类的委托绑定
+                push1.Receive += new Push.ReceivemEventHandler(HostHandleAlarm);//将A类的方法与B类的事件 用 B类的委托绑定
+                bt_link.Invoke(new SetTextCallback(SetText), false);
 
 
             }));
-
-
 
         }
 
@@ -52,13 +57,27 @@ namespace TestDemo
 
         }
         //４.编写事件处理程序
-        void HostHandleAlarm(object sender, EventArgs e)
+        void HostHandleAlarm(object sender, bool isLink, EventArgs e)
         {
-            Console.WriteLine("主人: 抓住了小偷！");
+
+            string link = "已连接";
+            if (!isLink) {
+                link = "未连接";
+            }
+
+
+            Console.WriteLine($"Push{sender}"+ link);
+            Console.WriteLine("主人: 抓住了小偷！" + sender);
+        }
+
+
+
+        //４.编写事件处理程序
+        void HostHandleAlarm(object sender, byte[] b, EventArgs e)
+        {
+            Console.WriteLine($"Push已接收:{sender} 长度:{b.Length}");
         }
     }
-
-
 
 
 

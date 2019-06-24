@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.bt_link = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -37,15 +37,15 @@
             this.bt_send = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // bt_link
             // 
-            this.button1.Location = new System.Drawing.Point(212, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.bt_link.Location = new System.Drawing.Point(215, 18);
+            this.bt_link.Name = "bt_link";
+            this.bt_link.Size = new System.Drawing.Size(75, 23);
+            this.bt_link.TabIndex = 0;
+            this.bt_link.Text = "button1";
+            this.bt_link.UseVisualStyleBackColor = true;
+            this.bt_link.Click += new System.EventHandler(this.Button1_Click);
             // 
             // listBox1
             // 
@@ -74,7 +74,7 @@
             // 
             // text_prot
             // 
-            this.text_prot.Location = new System.Drawing.Point(79, 12);
+            this.text_prot.Location = new System.Drawing.Point(79, 18);
             this.text_prot.Name = "text_prot";
             this.text_prot.Size = new System.Drawing.Size(100, 21);
             this.text_prot.TabIndex = 4;
@@ -109,7 +109,7 @@
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bt_link);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -120,7 +120,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bt_link;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;

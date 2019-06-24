@@ -59,7 +59,7 @@ namespace test.window.server.Server
         private void Server_OnReceive(int arg1, byte[] arg2)
         {
             //int aaa=server.GetAttached<int>(arg1);
-            Console.WriteLine($"Push已接收:{arg1} 长度:{arg2.Length}");
+            //Console.WriteLine($"Push已接收:{arg1} 长度:{arg2.Length}");
             server.Send(arg1, arg2, 0, arg2.Length);
         }
 

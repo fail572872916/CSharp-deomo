@@ -14,8 +14,11 @@ namespace test.window.server.Server
     public class Push
     {
 
-        public delegate void AlarmEventHandler(object sender, EventArgs e);//声明关于事件的委托
+        public delegate void AlarmEventHandler(object sender,bool isLink, EventArgs e);//声明关于事件的委托
         public event AlarmEventHandler Alarm;//声明事件
+
+        public delegate void ReceivemEventHandler(object sender,byte [] by,EventArgs e);//声明关于事件的委托
+        public event ReceivemEventHandler Receive;//声明事件
 
         public TcpPushServer server;
         /// <summary>
@@ -39,8 +42,8 @@ namespace test.window.server.Server
         public void Server_OnAccept(int obj)
         {
             //server.SetAttached(obj, 555);
-            Console.WriteLine($"Push已连接{obj}");
-            this.Alarm(obj, new EventArgs());   //触发事件,发出数据
+            //Console.WriteLine($"Push已连接{obj}");
+            this.Alarm(obj,true, new EventArgs());   //触发事件,发出数据
 
             //Thread thread = new Thread(new ThreadStart(() =>
             //{
@@ -65,7 +68,9 @@ namespace test.window.server.Server
         public void Server_OnReceive(int arg1, byte[] arg2)
         {
             //int aaa=server.GetAttached<int>(arg1);
-            Console.WriteLine($"Push已接收:{arg1} 长度:{arg2.Length}");
+
+            this.Receive(arg1,arg2, new EventArgs());
+            //Console.WriteLine($"Push已接收:{arg1} 长度:{arg2.Length}");
             server.Send(arg1, arg2, 0, arg2.Length);
         }
 
