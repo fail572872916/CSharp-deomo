@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.bt_link = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBox1_links = new System.Windows.Forms.ListBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.text_prot = new System.Windows.Forms.TextBox();
@@ -47,18 +47,21 @@
             this.bt_link.UseVisualStyleBackColor = true;
             this.bt_link.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // listBox1
+            // listBox1_links
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(22, 65);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(157, 460);
-            this.listBox1.TabIndex = 2;
+            this.listBox1_links.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.listBox1_links.FormattingEnabled = true;
+            this.listBox1_links.ItemHeight = 20;
+            this.listBox1_links.Location = new System.Drawing.Point(22, 65);
+            this.listBox1_links.Name = "listBox1_links";
+            this.listBox1_links.Size = new System.Drawing.Size(157, 460);
+            this.listBox1_links.TabIndex = 2;
+            this.listBox1_links.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ListBox1_links_DrawItem);
+            this.listBox1_links.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ListBox1_links_MeasureItem);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(227, 277);
+            this.textBox2.Location = new System.Drawing.Point(215, 326);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(544, 199);
@@ -66,7 +69,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(227, 77);
+            this.textBox3.Location = new System.Drawing.Point(215, 74);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(544, 176);
@@ -91,12 +94,13 @@
             // 
             // bt_send
             // 
-            this.bt_send.Location = new System.Drawing.Point(820, 438);
+            this.bt_send.Location = new System.Drawing.Point(789, 478);
             this.bt_send.Name = "bt_send";
-            this.bt_send.Size = new System.Drawing.Size(75, 23);
+            this.bt_send.Size = new System.Drawing.Size(86, 47);
             this.bt_send.TabIndex = 6;
-            this.bt_send.Text = "button2";
+            this.bt_send.Text = "发送";
             this.bt_send.UseVisualStyleBackColor = true;
+            this.bt_send.Click += new System.EventHandler(this.Bt_send_Click);
             // 
             // Form1
             // 
@@ -108,7 +112,7 @@
             this.Controls.Add(this.text_prot);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.listBox1_links);
             this.Controls.Add(this.bt_link);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -121,7 +125,7 @@
         #endregion
 
         private System.Windows.Forms.Button bt_link;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listBox1_links;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox text_prot;

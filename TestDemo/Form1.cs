@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,6 +29,18 @@ namespace TestDemo
             bt_link.Enabled = isShow;
         }
 
+        delegate void SetListCallback(object obj);
+        private void SetList(object obj)
+        {
+            listBox1_links.Items.Clear();
+
+
+            foreach (var item in obj as ConcurrentDictionary<int, String>)
+            {
+                listBox1_links.Items.Add(item.Value);
+            }
+
+        }
 
         //delegate void a(int a,int b,int c ,int d, void);//定义一个委托111111111111111111
 
@@ -57,23 +70,26 @@ namespace TestDemo
         {
 
             string link = "已连接";
-            if (!isLink) {
+            if (!isLink)
+            {
                 link = "未连接";
             }
 
 
-           
 
-            Console.WriteLine($"Push{sender}"+ link);
+
+            Console.WriteLine($"Push{sender}" + link);
             Console.WriteLine("主人: 抓住了小偷！" + sender);
             foreach (var item in push1.GetLink())
             {
 
-                Console.WriteLine("列表" + JsonHelper.SerializeObject(item.Key)+ "_____" + JsonHelper.SerializeObject(item.Value.ToString()));
-             
+                Console.WriteLine("列表" + JsonHelper.SerializeObject(item.Key) + "_____" + JsonHelper.SerializeObject(item.Value.ToString()));
+
             }
-          
-       
+           
+
+            listBox1_links.Invoke(new SetListCallback(SetList), push1.GetLink());
+
         }
 
 
@@ -83,7 +99,56 @@ namespace TestDemo
         {
             Console.WriteLine($"Push已接收:{sender} 长度:{b.Length}");
         }
+
+
+
+
+
+
+        /// <summary>
+        /// 设置listbox的高度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBox1_links_DrawItem(object sender, DrawItemEventArgs e)
+        {
+
+            if (e.Index == -1)
+            {
+                return;
+            }
+            e.DrawBackground(); //绘制各项的背景色
+            e.DrawFocusRectangle();
+            //让文字位于Item的中间
+            float difH = (e.Bounds.Height - e.Font.Height) / 2;
+            //指定绘制文本的位置
+            RectangleF rf = new RectangleF(e.Bounds.X, e.Bounds.Y + difH, e.Bounds.Width, e.Font.Height);
+            //绘制指定的字符串
+            e.Graphics.DrawString(listBox1_links.Items[e.Index].ToString(), e.Font, new SolidBrush(Color.Black), rf);
+
+
+        }
+
+
+
+
+        /// <summary>
+        /// 设置listbox的高度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBox1_links_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            e.ItemHeight = 20;
+
+        }
+
+        private void Bt_send_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(listBox1_links.SelectedItem + "————————");
+        }
     }
+
 
 
 
