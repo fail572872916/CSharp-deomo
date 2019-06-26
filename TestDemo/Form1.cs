@@ -30,6 +30,7 @@ namespace TestDemo
         }
 
         delegate void SetListCallback(object obj);
+
         private void SetList(object obj)
         {
             listBox1_links.Items.Clear();
@@ -41,6 +42,10 @@ namespace TestDemo
             }
 
         }
+
+        delegate void SetReceiveCallback(object obj);
+        private void UpdateReceive(object obj) => textBox_receive.AppendText(obj as string);
+
 
         //delegate void a(int a,int b,int c ,int d, void);//定义一个委托111111111111111111
 
@@ -86,7 +91,7 @@ namespace TestDemo
                 Console.WriteLine("列表" + JsonHelper.SerializeObject(item.Key) + "_____" + JsonHelper.SerializeObject(item.Value.ToString()));
 
             }
-           
+
 
             listBox1_links.Invoke(new SetListCallback(SetList), push1.GetLink());
 
@@ -98,6 +103,17 @@ namespace TestDemo
         void HostHandleAlarm(object sender, byte[] b, EventArgs e)
         {
             Console.WriteLine($"Push已接收:{sender} 长度:{b.Length}");
+
+
+            foreach (var item in push1.GetLink())
+            {
+
+                if (item.Key == (int)sender) {
+
+                    textBox_receive.Invoke(new SetReceiveCallback(UpdateReceive), item.Value + ":\t" + System.Text.Encoding.Default.GetString(b)+"\n");
+                }
+
+            }
         }
 
 
@@ -142,17 +158,25 @@ namespace TestDemo
             e.ItemHeight = 20;
 
         }
-
+        /// <summary>
+        /// 发送事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Bt_send_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(listBox1_links.SelectedItem + "————————");
 
+            string send = textBox_send.Text.Trim().ToString();
+            if (!string.IsNullOrEmpty(send))
+            {
 
-            byte[] arg2 = Encoding.UTF8.GetBytes("11");
+                byte[] arg2 = Encoding.UTF8.GetBytes(send);
 
-            int id = GetSelectId(listBox1_links.SelectedItem.ToString());
-            if (id != -1) {
-                push1.server.Send(id, arg2, 0, arg2.Length);
+                int id = GetSelectId(listBox1_links.SelectedItem.ToString());
+                if (id != -1)
+                {
+                    push1.server.Send(id, arg2, 0, arg2.Length);
+                }
             }
         }
 
@@ -161,9 +185,10 @@ namespace TestDemo
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <returns></returns>
-        private int GetSelectId(String ipAddress) {
+        private int GetSelectId(String ipAddress)
+        {
 
-    
+
             foreach (var item in push1.GetLink())
             {
 
@@ -178,9 +203,41 @@ namespace TestDemo
             return -1;
         }
 
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+
+
+
+        }
+
+        /// <summary>
+        /// 关闭窗体钱关闭所有连接
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            //if (push1 != null)
+            //{
+            //    foreach (var item in push1.GetLink())
+            //    {
+
+            //        push1.server.Close(item.Key);
+
+            //    }
+            //}
+            //Thread.Sleep(100);
+        }
+
+        private void TextBox_receive_MouseClick(object sender, MouseEventArgs e)
+        {
+            textBox_receive.Text = "";
+        }
     }
 
-
+    
 
 
 
