@@ -89,7 +89,7 @@ namespace socket.core.Server
         /// <summary>
         /// 已经连接的对象池
         /// </summary>
-        internal ConcurrentDictionary<int, String> connectString;
+        public ConcurrentDictionary<int, String> connectString;
         /// <summary>
         /// 发送线程数
         /// </summary>
@@ -118,6 +118,11 @@ namespace socket.core.Server
         /// 断开连接通知事件 item1:connectId,
         /// </summary>
         internal event Action<int> OnClose;
+
+
+
+        internal event Action<ConcurrentDictionary<int, String>> OnLinks;
+
 
         /// <summary>
         /// 设置基本配置
@@ -273,7 +278,7 @@ namespace socket.core.Server
             connecttoken.saea_receive.UserToken = connectId;
             connecttoken.saea_receive.AcceptSocket = e.AcceptSocket;
             connectClient.TryAdd(connectId, connecttoken);
-            connectString.TryAdd(connectId, connecttoken.ToString());
+            connectString.TryAdd(connectId, connecttoken.socket.RemoteEndPoint.ToString());
             //一旦客户机连接，就准备接收。
             if (!e.AcceptSocket.ReceiveAsync(connecttoken.saea_receive))
             {
@@ -514,10 +519,12 @@ namespace socket.core.Server
                 m_maxNumberAcceptedClients.Release();
                 if (OnClose != null)
                 {
+                    connectString.TryRemove((int)e.UserToken, out socketName);
                     OnClose(connectId);
                 }
+                Console.WriteLine("这里关闭了??"+"_________"+ (int)e.UserToken);
                 connectClient.TryRemove((int)e.UserToken, out client);
-                connectString.TryRemove((int)e.UserToken, out socketName);
+              
                 client = null;
             }
         }
@@ -561,6 +568,12 @@ namespace socket.core.Server
             }
         }
         #endregion
+
+
+        internal ConcurrentDictionary<int, String> GetLink()
+        {
+           return connectString;
+        }
     }
 
 }

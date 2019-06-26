@@ -1,6 +1,7 @@
 ﻿
 using socket.core.Server;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -80,6 +81,7 @@ namespace test.window.server.Server
             this.Alarm(obj, false, new EventArgs());   //触发事件,发出数据
             //Console.WriteLine($"Push断开{obj}");
         }
+        public ConcurrentDictionary<int, String> GetLink() => server.GetLink();
 
     }
 

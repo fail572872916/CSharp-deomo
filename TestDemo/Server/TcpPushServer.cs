@@ -158,5 +158,8 @@ namespace socket.core.Server
         {
             return tcpServer.GetAttached<T>(connectId);
         }
+
+        public ConcurrentDictionary<int, String> GetLink() => tcpServer.connectString;
+
     }
 }

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using test.window.server.Server;
+using TestDemo.Common;
 using static test.window.server.Server.Push;
 
 namespace TestDemo
@@ -35,14 +36,9 @@ namespace TestDemo
             String port = text_prot.Text.ToString();
 
 
-
-
-
             ThreadPool.QueueUserWorkItem(new WaitCallback((object o) =>
             {
                 push1 = new Push(500, 1024, 0, Convert.ToInt32(port));
-
-
                 push1.Alarm += new Push.AlarmEventHandler(HostHandleAlarm);//将A类的方法与B类的事件 用 B类的委托绑定
                 push1.Receive += new Push.ReceivemEventHandler(HostHandleAlarm);//将A类的方法与B类的事件 用 B类的委托绑定
                 bt_link.Invoke(new SetTextCallback(SetText), false);
@@ -66,8 +62,18 @@ namespace TestDemo
             }
 
 
+           
+
             Console.WriteLine($"Push{sender}"+ link);
             Console.WriteLine("主人: 抓住了小偷！" + sender);
+            foreach (var item in push1.GetLink())
+            {
+
+                Console.WriteLine("列表" + JsonHelper.SerializeObject(item.Key)+ "_____" + JsonHelper.SerializeObject(item.Value.ToString()));
+             
+            }
+          
+       
         }
 
 
