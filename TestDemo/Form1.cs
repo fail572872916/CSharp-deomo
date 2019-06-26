@@ -146,7 +146,38 @@ namespace TestDemo
         private void Bt_send_Click(object sender, EventArgs e)
         {
             Console.WriteLine(listBox1_links.SelectedItem + "————————");
+
+
+            byte[] arg2 = Encoding.UTF8.GetBytes("11");
+
+            int id = GetSelectId(listBox1_links.SelectedItem.ToString());
+            if (id != -1) {
+                push1.server.Send(id, arg2, 0, arg2.Length);
+            }
         }
+
+        /// <summary>
+        /// 根据选中的
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        private int GetSelectId(String ipAddress) {
+
+    
+            foreach (var item in push1.GetLink())
+            {
+
+                if (ipAddress.Equals(item.Value))
+                {
+
+                    return item.Key;
+                }
+
+            }
+
+            return -1;
+        }
+
     }
 
 
